@@ -1,305 +1,360 @@
+<html>
 <style>
-.container{
-display:flex;
-    flex-wrap: wrap
-}
+    .container {
+        display: flex;
+        flex-wrap: wrap
+    }
 
 
-body{
-color: white;
-background-color:#ecf0f1;
-}
+    body {
+        color: white;
+        background-color: #ecf0f1;
+    }
 
 
-h1{
-padding:20px;
-color: white;
-background-color: #16a085;
+    h1 {
+        padding: 20px;
+        color: white;
+        background-color: #16a085;
 
-}
+    }
 
-div{
-margin: 20px;
-padding:20px;
-border-style: solid;
-color: blue;
-border-color: red;
-position: relative;
-}
+    div {
+        margin: 20px;
+        padding: 20px;
+        border-style: solid;
+        color: blue;
+        border-color: red;
+        position: relative;
+    }
 
-input{
-width:200px;
-height:50px;
-margin:30px;
-}
+    input {
+        width: 200px;
+        height: 50px;
+        margin: 30px;
+    }
 
-button{
-width:200px;
-height:50px;
-margin:30px;
-}
+    button {
+        width: 200px;
+        height: 50px;
+        margin: 30px;
+    }
 
-.showWhenFound{
-visibility:hidden;
-font-size : 20px;
-color: green;
-}
+    .showWhenFound {
+        visibility: hidden;
+        font-size: 20px;
+        color: green;
+    }
 
-.showWhenNotFound{
-visibility:hidden;
-font-size : 20px;
-color: red;
-}
+    .showWhenNotFound {
+        visibility: hidden;
+        font-size: 20px;
+        color: red;
+    }
 
-span{
-color: black;
-padding: 2px;
-position: absolute;
-top: 0px;
-right: 0px;
-font-size: 14px;
-}
+    span {
+        color: black;
+        padding: 2px;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        font-size: 14px;
+    }
 </style>
-<link rel="icon" href="https://cdn4.iconfinder.com/data/icons/new-seo-bussiness-set2/1024/Algorithm-01-512.png">
+<link rel="icon" href="https://cdn4.iconfinder.com/data/icons/new-seo-bussiness-set2/1024/Algorithm-01-512.png"></link>
 <h1 style="text-align:center"> Linked List Operations Live!!!</h1>
-<input id='nodes'> 
-<button  onclick="addNode(this)">Add node</button>
-<article class='container'>
-
-
-</article>
-<input id='input'> 
-<button  onclick="triggerCounter(this)">Find nth node from behind</button>
-<button  onclick="triggerCounterInOrder(this)">Find the node</button>
-<button  onclick="triggetMiddle(this)">Find Middle</button>
-<button  onclick="clearColors(this)">Clear colors</button>
+<input id='nodes'>
+<button onclick="addNode(this, true)">Add node</button>
+<article class='container' id='container'></article>
+<input id='input'>
+<button onclick="triggerCounter(this)">Find nth node from behind</button>
+<button onclick="triggerCounterInOrder(this)">Find the node</button>
+<button onclick="triggetMiddle(this)">Find Middle</button>
+<button onclick="reverseList(this)">Reverse</button>
+<button onclick="clearColors(this)">Clear colors</button>
 <div class='showWhenFound'></div>
 <div class='showWhenNotFound'>No Element</div>
 <script>
-
-function clearColors(element){
-let current = head;
-while(current!=null){
-		document.getElementById(String(current.id)).style.backgroundColor = 'white'
-		current = current.next;
-	}
-}
-
-
-class linkNode {
-    constructor(data, id) {
-        this.data = data;
-		this.id= id;
-        this.next = null;
+    function clearColors(element) {
+        let current = head;
+        while (current != null) {
+            document.getElementById(String(current.id)).style.backgroundColor = 'white'
+            current = current.next;
+        }
     }
-}
-var head = null, linkedList = null;
 
-function addNode(element){
-let value = document.getElementById('nodes').value;
-var node = document.createElement("div");  
-node.id = parseInt(Math.random() * 1000); 
-node.innerHTML = value + '<span onclick="deleteElement(this)" id=close' + node.id + '><a href="#">-</a></span>'; 
+    function reverseList(e) {
 
+        document.getElementById('container').innerHTML = '';
 
-if(head == null){
-linkedList = new linkNode();
-linkedList.data = value;
- head = linkedList;
- linkedList.id = node.id
- 
-}else{
-linkedList.next = new linkNode();
-linkedList = linkedList.next
-linkedList.data = value;
-linkedList.id = node.id
-}
+        head = reverLinkedList(head);
+        createNodesInOrder(head);
+    }
 
-document.getElementsByClassName('container')[0].appendChild(node)
-}
-
-function deleteElement(element){
-
-	let id = element.id.replace(/\D/g, '');
-	document.getElementById(id).remove();
-	deleteFromLinkedList(head, id)
-	console.log(head);
-}
-
-function deleteFromLinkedList(node, id){
-let current = node;
-if(current.id == id){
- head = head.next;	
-}else{
-	let prev = current;
-	while(current !=null){
-		if(current.id == id){
-			if(current.next == null){
-				prev.next = null;return;
-			}else{
-				prev.next = current.next;
-				return;
-			}		
-		}
-			prev = current;
-			current = current.next;
-	}
-}
-
-}
-
-function numSort(num){
-let finalSum = 0;
-let b,a;
- num.sort(function(a,b){return a - b})
-    for(let i=0; i< num.length; i++ ){
-         a = num[0];
-		if(num[1]){
-			b  = num[1];
-		}
-        sum = a+b;
-		finalSum +=sum;
-		num = num.slice(2)
-		let flag = false;
-		let length = num.length;
-		for(var k =length-1;k>=0 && num[k]>sum; k--){
-		 num[k+1] = num[k];
-		 }
-		 if(k== -1){
-		 num[k+1] = sum
-		 num.length = 1;
-		 }else{
-		  num[k+1] = sum
-		 }
-		i=0;
-}
-console.log(finalSum)
-}
-
-
-function findNthFromFront(head, k){
- let i=1;
- let node = head, prev = head; 	
- if(head!=null){
- let interval = window.setInterval(()=>{
-	document.getElementById(String(prev.id)).style.backgroundColor = 'white'
-	document.getElementById(String(node.id)).style.backgroundColor = 'yellow'
-	if(node.data==k){
-		document.getElementById(String(node.id)).style.backgroundColor = 'lightgreen'
-		document.getElementsByClassName('showWhenFound')[0].innerText  = 'Found the Element at position:' + i;
-		document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
-		document.getElementById(String(node.id)).style.backgroundColor = 'white'
-		clearInterval(interval);
-		return;
-	}
-	prev = node;
-	node = node.next;	
-	if(node==null){
-	document.getElementsByClassName('showWhenNotFound')[0].style.visibility = 'visible'
-	clearInterval(interval);
-		return;
-	}
-	i++;
-	}, 100);
-	}else{
-	document.getElementsByClassName('showWhenFound')[0].innerText  = 'Zero elements';
-	document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
-	}
-}
-
-
-var ultimate = 0;
-function findNthFromBehind(head, k) {
-    let i = 1;
-    node = head;
-    secondPointer = head;
-	prev = head;
-	prevSecond = head;
-	if(head!=null){
-    let interval = window.setInterval(() => {
-       document.getElementById(String(prev.id)).style.backgroundColor = 'white'		
-        if(i>=k){
-            document.getElementById(prevSecond.id).style.backgroundColor = 'white'
-            prevSecond = secondPointer;
-            document.getElementById(secondPointer.id).style.backgroundColor = 'lightblue'
-secondPointer = secondPointer.next;			
-        }
-		prev = node;
-        document.getElementById(String(node.id)).style.backgroundColor = 'yellow'
-        node = node.next;
-        if (node == null) {
-			if(prev!=prevSecond)
-            document.getElementById(prev.id).style.backgroundColor = 'white'
-            clearInterval(interval);
-			ultimate = secondPointer.id;
+    function createNodesInOrder(head) {
+        let current = head;
+        if (current == null) {
             return;
+        } else {
+            while (current != null) {
+                let node = document.createElement("div");
+                node.id = current.id
+                node.innerHTML = current.data + '<span onclick="deleteElement(this)" id=close' + node.id +
+                    '><a href="#">-</a></span>';
+                document.getElementById('container').appendChild(node);
+                linkedList = current;
+                current = current.next;
+            }
         }
-        i++;
-    },100);
-	}else{
-	document.getElementsByClassName('showWhenFound')[0].innerText  = 'Zero elements';
-	document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
-	}
-}
 
-function middleOfLinkedList(head) {
-    let i = 1;
-    node = head;
-    secondPointer = head;
-	prev = head;
-	secondPrev = head;
-	if(head!=null){
-    let interval = window.setInterval(() => {
-      	document.getElementById(String(prev.id)).style.backgroundColor = 'white'		
-		document.getElementById(String(secondPrev.id)).style.backgroundColor = 'white'
-       
-		document.getElementById(String(secondPointer.id)).style.backgroundColor = 'lightgrey' 
-		 document.getElementById(String(node.id)).style.backgroundColor = 'yellow'
-		prev = node;
-        node = node.next;
-		secondPrev = secondPointer;		
-		if(secondPointer.next == null){
-		if(secondPointer!=prev){
-		document.getElementById(String(secondPrev.id)).style.backgroundColor = 'white'	
-		}
-		clearInterval(interval);
-            return;
-		}
-		
-		secondPointer = secondPointer.next.next;		
-        if (secondPointer == null) {       
-	
-            clearInterval(interval);
-            return;
+    }
+
+
+    class linkNode {
+        constructor(data, id) {
+            this.data = data;
+            this.id = id;
+            this.next = null;
         }
-        i++;
-    }, 100);
-	}else{
-	document.getElementsByClassName('showWhenFound')[0].innerText  = 'Zero elements';
-	document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
-	}
-}
+    }
+    var head = null,
+        linkedList = null;
 
-function triggerCounterInOrder(element){
-document.getElementsByClassName('showWhenNotFound')[0].style.visibility = 'hidden'
-document.getElementsByClassName('showWhenFound')[0].style.visibility = 'hidden'
-if(ultimate > 0)
- document.getElementById(String(ultimate)).style.backgroundColor = 'white'
-	findNthFromFront(head, Number(document.getElementById('input').value))
-}
+    function addNode(element, shouldCreateLinkedList) {
+        let value = document.getElementById('nodes').value;
+        var node = document.createElement("div");
+        node.id = parseInt(Math.random() * 1000);
+        node.innerHTML = value + '<span onclick="deleteElement(this)" id=close' + node.id + '><a href="#">-</a></span>';
+
+        if (shouldCreateLinkedList) {
+            initializeNode(node, value)
+        }
+        document.getElementsByClassName('container')[0].appendChild(node)
+    }
+
+    function initializeNode(node, value) {
+        if (head == null) {
+            linkedList = new linkNode();
+            linkedList.data = value;
+            head = linkedList;
+            linkedList.id = node.id
+
+        } else {
+            linkedList.next = new linkNode();
+            linkedList = linkedList.next
+            linkedList.data = value;
+            linkedList.id = node.id
+        }
+    }
+
+    function deleteElement(element) {
+
+        let id = element.id.replace(/\D/g, '');
+        document.getElementById(id).remove();
+        deleteFromLinkedList(head, id)
+        console.log(head);
+    }
+
+    function deleteFromLinkedList(node, id) {
+        let current = node;
+        if (current.id == id) {
+            head = head.next;
+        } else {
+            let prev = current;
+            while (current != null) {
+                if (current.id == id) {
+                    if (current.next == null) {
+                        prev.next = null;
+                        return;
+                    } else {
+                        prev.next = current.next;
+                        return;
+                    }
+                }
+                prev = current;
+                current = current.next;
+            }
+        }
+
+    }
+
+    function numSort(num) {
+        let finalSum = 0;
+        let b, a;
+        num.sort(function (a, b) {
+            return a - b
+        })
+        for (let i = 0; i < num.length; i++) {
+            a = num[0];
+            if (num[1]) {
+                b = num[1];
+            }
+            sum = a + b;
+            finalSum += sum;
+            num = num.slice(2)
+            let flag = false;
+            let length = num.length;
+            for (var k = length - 1; k >= 0 && num[k] > sum; k--) {
+                num[k + 1] = num[k];
+            }
+            if (k == -1) {
+                num[k + 1] = sum
+                num.length = 1;
+            } else {
+                num[k + 1] = sum
+            }
+            i = 0;
+        }
+        console.log(finalSum)
+    }
 
 
 
-function triggerCounter(element){
-document.getElementsByClassName('showWhenNotFound')[0].style.visibility = 'hidden'
-document.getElementsByClassName('showWhenFound')[0].style.visibility = 'hidden'
-if(ultimate > 0)
- document.getElementById(String(ultimate)).style.backgroundColor = 'white'
-	findNthFromBehind(head, Number(document.getElementById('input').value))
-}
+    function reverLinkedList(head) {
+        current = head;
+        let prev = null;
+        let next = null;
+        if (head == null) {
+            return null
+        }
+        while (current != null) {
 
-function triggetMiddle(element){
-	middleOfLinkedList(head)
-}
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        head = prev;
+        return head;
+    }
+
+    function findNthFromFront(head, k) {
+        let i = 1;
+        let node = head,
+            prev = head;
+        if (head != null) {
+            let interval = window.setInterval(() => {
+                document.getElementById(String(prev.id)).style.backgroundColor = 'white'
+                document.getElementById(String(node.id)).style.backgroundColor = 'yellow'
+                if (node.data == k) {
+                    document.getElementById(String(node.id)).style.backgroundColor = 'lightgreen'
+                    document.getElementsByClassName('showWhenFound')[0].innerText =
+                        'Found the Element at position:' + i;
+                    document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
+                    document.getElementById(String(node.id)).style.backgroundColor = 'white'
+                    clearInterval(interval);
+                    return;
+                }
+                prev = node;
+                node = node.next;
+                if (node == null) {
+                    document.getElementsByClassName('showWhenNotFound')[0].style.visibility = 'visible'
+                    clearInterval(interval);
+                    return;
+                }
+                i++;
+            }, 100);
+        } else {
+            document.getElementsByClassName('showWhenFound')[0].innerText = 'Zero elements';
+            document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
+        }
+    }
+
+
+    var ultimate = 0;
+
+    function findNthFromBehind(head, k) {
+        let i = 1;
+        node = head;
+        secondPointer = head;
+        prev = head;
+        prevSecond = head;
+        if (head != null) {
+            let interval = window.setInterval(() => {
+                document.getElementById(String(prev.id)).style.backgroundColor = 'white'
+                if (i >= k) {
+                    document.getElementById(prevSecond.id).style.backgroundColor = 'white'
+                    prevSecond = secondPointer;
+                    document.getElementById(secondPointer.id).style.backgroundColor = 'lightblue'
+                    secondPointer = secondPointer.next;
+                }
+                prev = node;
+                document.getElementById(String(node.id)).style.backgroundColor = 'yellow'
+                node = node.next;
+                if (node == null) {
+                    if (prev != prevSecond)
+                        document.getElementById(prev.id).style.backgroundColor = 'white'
+                    clearInterval(interval);
+                    ultimate = secondPointer.id;
+                    return;
+                }
+                i++;
+            }, 100);
+        } else {
+            document.getElementsByClassName('showWhenFound')[0].innerText = 'Zero elements';
+            document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
+        }
+    }
+
+    function middleOfLinkedList(head) {
+        let i = 1;
+        node = head;
+        secondPointer = head;
+        prev = head;
+        secondPrev = head;
+        if (head != null) {
+            let interval = window.setInterval(() => {
+                document.getElementById(String(prev.id)).style.backgroundColor = 'white'
+                document.getElementById(String(secondPrev.id)).style.backgroundColor = 'white'
+
+                document.getElementById(String(secondPointer.id)).style.backgroundColor = 'lightgrey'
+                document.getElementById(String(node.id)).style.backgroundColor = 'yellow'
+                prev = node;
+                node = node.next;
+                secondPrev = secondPointer;
+                if (secondPointer.next == null) {
+                    if (secondPointer != prev) {
+                        document.getElementById(String(secondPrev.id)).style.backgroundColor = 'white'
+                    }
+                    clearInterval(interval);
+                    return;
+                }
+
+                secondPointer = secondPointer.next.next;
+                if (secondPointer == null) {
+
+                    clearInterval(interval);
+                    return;
+                }
+                i++;
+            }, 100);
+        } else {
+            document.getElementsByClassName('showWhenFound')[0].innerText = 'Zero elements';
+            document.getElementsByClassName('showWhenFound')[0].style.visibility = 'visible'
+        }
+    }
+
+    function triggerCounterInOrder(element) {
+        document.getElementsByClassName('showWhenNotFound')[0].style.visibility = 'hidden'
+        document.getElementsByClassName('showWhenFound')[0].style.visibility = 'hidden'
+        if (ultimate > 0)
+            document.getElementById(String(ultimate)).style.backgroundColor = 'white'
+        findNthFromFront(head, Number(document.getElementById('input').value))
+    }
+
+
+
+    function triggerCounter(element) {
+        document.getElementsByClassName('showWhenNotFound')[0].style.visibility = 'hidden'
+        document.getElementsByClassName('showWhenFound')[0].style.visibility = 'hidden'
+        if (ultimate > 0)
+            document.getElementById(String(ultimate)).style.backgroundColor = 'white'
+        findNthFromBehind(head, Number(document.getElementById('input').value))
+    }
+
+    function triggetMiddle(element) {
+        middleOfLinkedList(head)
+    }
 </script>
 
+</html>
